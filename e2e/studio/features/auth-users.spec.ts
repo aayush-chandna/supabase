@@ -120,7 +120,7 @@ test('should show web3 users as enabled when the matching web3 provider is enabl
   await expect(providerRow).not.toContainText('Disabled')
 })
 
-test('should close the user panel from its close button', async ({ page, ref }) => {
+test('should close the user dialog from its close button', async ({ page, ref }) => {
   const userId = '22222222-2222-4222-8222-222222222222'
 
   await page.route('**/platform/pg-meta/*/query**', async (route) => {
@@ -159,9 +159,7 @@ test('should close the user panel from its close button', async ({ page, ref }) 
 
   await expect(page.getByRole('tab', { name: 'Overview' })).toBeVisible()
 
-  // The tab list is a positioned sibling that spans the panel's full width, so it
-  // will intercept this click unless the button is stacked above it.
-  await page.getByRole('button', { name: 'Close panel' }).click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click()
 
   await expect(page.getByRole('tab', { name: 'Overview' })).toBeHidden()
   await expect.poll(() => new URL(page.url()).searchParams.get('show')).toBeNull()

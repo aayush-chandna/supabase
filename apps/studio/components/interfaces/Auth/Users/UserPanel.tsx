@@ -1,12 +1,12 @@
-import { XIcon } from 'lucide-react'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useState } from 'react'
 import {
   Button,
   cn,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Input,
-  ResizableHandle,
-  ResizablePanel,
   Tabs,
   TabsContent,
   TabsList,
@@ -57,16 +57,13 @@ export const UserPanel = () => {
     : {}
 
   return (
-    <>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize="35" maxSize="45" minSize="35" className="bg-studio border-t">
-        <Button
-          variant="text"
-          className="absolute top-3 right-3 z-10 px-1"
-          icon={<XIcon />}
-          onClick={() => setSelectedId(null)}
-          aria-label="Close panel"
-        />
+    <Dialog open={!!selectedId} onOpenChange={(open) => !open && setSelectedId(null)}>
+      <DialogContent
+        size="xlarge"
+        aria-describedby={undefined}
+        className="h-[80vh] flex flex-col overflow-hidden p-0 gap-0"
+      >
+        <DialogTitle className="sr-only">User details</DialogTitle>
         <Tabs
           value={view}
           className="flex flex-col h-full"
@@ -81,7 +78,7 @@ export const UserPanel = () => {
             </div>
           ) : !!selectedUser ? (
             <>
-              <TabsList className="px-5 flex gap-x-4 min-h-[46px]">
+              <TabsList className="pl-5 pr-12 flex gap-x-4 min-h-[46px]">
                 <TabsTrigger
                   value="overview"
                   className="px-0 pb-0 h-full text-xs  data-[state=active]:bg-transparent shadow-none!"
@@ -150,7 +147,7 @@ export const UserPanel = () => {
             </div>
           )}
         </Tabs>
-      </ResizablePanel>
-    </>
+      </DialogContent>
+    </Dialog>
   )
 }
